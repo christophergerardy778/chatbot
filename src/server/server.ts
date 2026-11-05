@@ -7,5 +7,5 @@ app.get("/", (c) => c.text("Hello hono!"));
 
 serve({
     fetch: app.fetch,
-    port: process.env.PORT ? Number(process.env.PORT) : 3000,
+  port: process.env.PORT ? Number(process.env.PORT) : 3000,
 });
