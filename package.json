@@ -2,16 +2,30 @@
   "type": "module",
   "scripts": {
     "prepare": "husky",
-    "dev": "ts-node src/app.ts"
+    "dev": "node --watch-path=src src/server/server.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@hono/node-server": "^2.1.6",
+    "hono": "^4.13.16",
     "ollama": "^0.6.4",
     "pino": "^10.4.0",
     "tsyringe": "^4.10.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^26.6.6",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.7",
+    "globals": "^17.14.0",
     "husky": "^9.1.7",
-    "typescript": "^7.0.2"
+    "prettier": "3.9.10",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }

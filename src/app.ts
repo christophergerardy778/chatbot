@@ -1,5 +1,5 @@
-import ollama from 'ollama';
-import readline from 'node:readline/promises';
+import ollama from "ollama";
+import readline from "node:readline/promises";
 
 const chatHystory: { role: string; content: string }[] = [];
 
@@ -11,34 +11,34 @@ const rl = readline.createInterface({
 let continueChat = true;
 
 async function main() {
-    console.log("Bienvenido a Ollama Chat! Escribe 'exit' para salir.");
-    
-    do {
-        const msg = await rl.question('You: ');
+  console.log("Bienvenido a Ollama Chat! Escribe 'exit' para salir.");
 
-        if (msg.toLowerCase() === 'exit') {
-            continueChat = false;
-            rl.close();
-            break;
-        }
+  do {
+    const msg = await rl.question("You: ");
 
-        chatHystory.push({
-            role: 'user',
-            content: msg,
-        });
+    if (msg.toLowerCase() === "exit") {
+      continueChat = false;
+      rl.close();
+      break;
+    }
 
-        const chatResponse = await ollama.chat({
-            model: 'llama3.1:8b',
-            messages: chatHystory,
-        });
+    chatHystory.push({
+      role: "user",
+      content: msg,
+    });
 
-        chatHystory.push({
-            role: 'assistant',
-            content: chatResponse.message.content,
-        });
+    const chatResponse = await ollama.chat({
+      model: "llama3.1:8b",
+      messages: chatHystory,
+    });
 
-        console.log(`Ollama: ${chatResponse.message.content}`);
-    } while (continueChat);
+    chatHystory.push({
+      role: "assistant",
+      content: chatResponse.message.content,
+    });
+
+    console.log(`Ollama: ${chatResponse.message.content}`);
+  } while (continueChat);
 }
 
 await main();
