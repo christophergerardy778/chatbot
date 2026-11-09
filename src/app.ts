@@ -1,44 +1,8 @@
-import ollama from "ollama";
-import readline from "node:readline/promises";
+import { startServer } from "./server/start-server.ts";
 
-const chatHystory: { role: string; content: string }[] = [];
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-let continueChat = true;
-
-async function main() {
-  console.log("Bienvenido a Ollama Chat! Escribe 'exit' para salir.");
-
-  do {
-    const msg = await rl.question("You: ");
-
-    if (msg.toLowerCase() === "exit") {
-      continueChat = false;
-      rl.close();
-      break;
-    }
-
-    chatHystory.push({
-      role: "user",
-      content: msg,
-    });
-
-    const chatResponse = await ollama.chat({
-      model: "llama3.1:8b",
-      messages: chatHystory,
-    });
-
-    chatHystory.push({
-      role: "assistant",
-      content: chatResponse.message.content,
-    });
-
-    console.log(`Ollama: ${chatResponse.message.content}`);
-  } while (continueChat);
+try {
+  await startServer();
+  console.log("Server started successfully.");
+} catch (error) {
+  console.error("Error starting server:", error);
 }
-
-await main();
