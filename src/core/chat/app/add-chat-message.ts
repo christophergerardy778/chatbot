@@ -1,6 +1,6 @@
 import { ChatRole } from "../domain/chat-role.ts";
 import { ChatMessage } from "../domain/chat-message.ts";
-import type { ChatRepository } from "../domain/chat-repository.ts";
+import type { ChatRepository } from "./ports/chat-repository.ts";
 
 export class AddChatMessage {
   constructor(private readonly chatRepository: ChatRepository) {}

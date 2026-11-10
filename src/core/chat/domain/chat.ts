@@ -5,7 +5,7 @@ export class Chat {
     private readonly chatName: string
   ) {}
 
-  public id(): string {
+  get id(): string {
     return this.chatId;
   }
 }
