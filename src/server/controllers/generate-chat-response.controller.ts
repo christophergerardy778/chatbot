@@ -5,6 +5,8 @@ import { streamSSE } from "hono/streaming";
 import { ChatUserMessage } from "../../core/chat/domain/chat-user-message.ts";
 import { ChatLanguageModelToken } from "../../core/chat/infrastructure/di/tokens.ts";
 import type { ChatLanguageModel } from "../../core/chat/app/ports/chat-language-model.ts";
+import { ChatMessage } from "../../core/chat/domain/chat-message.ts";
+import { ChatRole } from "../../core/chat/domain/chat-role.ts";
 
 @injectable()
 export class GenerateChatResponseController {
@@ -30,7 +32,9 @@ export class GenerateChatResponseController {
         });
       }
 
-      console.log(finalMessage);
+      console.log(
+        ChatMessage.create(body.chatId, ChatRole.ASSISTANT, finalMessage)
+      );
     });
   }
 }
