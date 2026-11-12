@@ -3,9 +3,9 @@ import type { Chat } from "./chat.ts";
 
 export class ChatMessage {
   constructor(
-    private chatId: Chat["chatId"],
-    private role: ChatRole,
-    private content: string
+    public readonly chatId: Chat["chatId"],
+    public readonly role: ChatRole,
+    public readonly content: string
   ) {}
 
   public static create(
@@ -14,13 +14,5 @@ export class ChatMessage {
     content: string
   ): ChatMessage {
     return new ChatMessage(chatId, role, content);
-  }
-
-  public message() {
-    return {
-      chatId: this.chatId,
-      role: this.role,
-      content: this.content,
-    };
   }
 }

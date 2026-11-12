@@ -1,3 +1,4 @@
+import type { ChatMessage } from "../../domain/chat-message.ts";
 export interface ChatLanguageModel {
-  generate(): AsyncIterable<string>;
+  generate(chatMessage: ChatMessage): AsyncIterable<string>;
 }
