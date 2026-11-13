@@ -1,40 +1,32 @@
-import { inject, injectable } from "tsyringe";
 import type { Context } from "hono";
-import { streamSSE } from "hono/streaming";
+import type { GenerateChatResponseInput } from "common";
+import type { GenerateChatResponse } from "../../core/chat/app/generate-chat-response.ts";
 
+import { streamSSE } from "hono/streaming";
+import { inject, injectable } from "tsyringe";
 import { ChatUserMessage } from "../../core/chat/domain/chat-user-message.ts";
-import { ChatLanguageModelToken } from "../../core/chat/infrastructure/di/tokens.ts";
-import type { ChatLanguageModel } from "../../core/chat/app/ports/chat-language-model.ts";
-import { ChatMessage } from "../../core/chat/domain/chat-message.ts";
-import { ChatRole } from "../../core/chat/domain/chat-role.ts";
+import { GenerateChatResponseToken } from "../../core/chat/infrastructure/di/tokens.ts";
 
 @injectable()
 export class GenerateChatResponseController {
   constructor(
-    @inject(ChatLanguageModelToken)
-    private readonly chatLanguageModel: ChatLanguageModel
+    @inject(GenerateChatResponseToken)
+    private readonly generateChatResponse: GenerateChatResponse
   ) {}
 
   async send(context: Context) {
-    let finalMessage = "";
-    const body = await context.req.json();
+    const body = await context.req.json<GenerateChatResponseInput>();
     const chatMessage = ChatUserMessage.create(body.chatId, body.content);
 
     return streamSSE(context, async (stream) => {
-      const chunks = this.chatLanguageModel.generate(chatMessage);
+      const chunks = this.generateChatResponse.execute(chatMessage);
 
       for await (const chunk of chunks) {
-        finalMessage += chunk;
-
         stream.writeSSE({
           data: chunk,
           event: "chunk",
         });
       }
-
-      console.log(
-        ChatMessage.create(body.chatId, ChatRole.ASSISTANT, finalMessage)
-      );
     });
   }
 }

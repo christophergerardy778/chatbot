@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "@hono/node-server": "^2.1.6",
+    "@hono/zod-validator": "^0.9.1",
+    "common": "file:../common/common-1.0.0.tgz",
     "hono": "^4.13.16",
     "ollama": "^0.6.4",
     "pino": "^10.4.0",
