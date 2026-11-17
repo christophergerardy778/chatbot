@@ -9,6 +9,7 @@ import { OllamaChatLanguageModel } from "./core/chat/infrastructure/ollama-chat-
 import { GenerateChatResponseControllerToken } from "./server/di/tokens.ts";
 import { GenerateChatResponseController } from "./server/controllers/generate-chat-response.controller.ts";
 import { GenerateChatResponse } from "./core/chat/app/generate-chat-response.ts";
+import { DrizzelConnection } from "./core/shared/infrastructure/persistence/drizzle-connection.ts";
 
 // CORE
 container.register<ChatLanguageModel>(ChatLanguageModelToken, {
@@ -18,6 +19,11 @@ container.register<ChatLanguageModel>(ChatLanguageModelToken, {
 container.register<GenerateChatResponse>(GenerateChatResponseToken, {
   useClass: GenerateChatResponse,
 });
+
+container.registerInstance(
+  DrizzelConnection,
+  new DrizzelConnection(process.env.DATABASE_URL!)
+);
 
 // SERVER
 container.register(GenerateChatResponseControllerToken, {
