@@ -1,11 +1,11 @@
 export class Chat {
   constructor(
-    private readonly chatId: string,
-    private readonly userId: string,
-    private readonly chatName: string
+    public readonly id: string,
+    public readonly userId: string,
+    public readonly name: string,
+    public readonly summary: string,
+    public readonly next_sequence: number,
+    public readonly facts_until_sequence: number,
+    public readonly created_at: Date
   ) {}
-
-  get id(): string {
-    return this.chatId;
-  }
 }

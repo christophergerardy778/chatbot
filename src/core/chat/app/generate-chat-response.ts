@@ -1,9 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { ChatLanguageModelToken } from "../infrastructure/di/tokens.ts";
 import type { ChatLanguageModel } from "./ports/chat-language-model.ts";
-import type { ChatUserMessage } from "../domain/chat-user-message.ts";
-import { ChatMessage } from "../domain/chat-message.ts";
-import { ChatRole } from "../domain/chat-role.ts";
+import { Message } from "../../message/domain/message.ts";
 
 @injectable()
 export class GenerateChatResponse {
@@ -12,9 +10,7 @@ export class GenerateChatResponse {
     private readonly chatLanguageModel: ChatLanguageModel
   ) {}
 
-  public async *execute(
-    chatUserMessage: ChatUserMessage
-  ): AsyncGenerator<string> {
+  public async *execute(chatUserMessage: Message): AsyncGenerator<string> {
     let finalMessage = "";
 
     const chunks = this.chatLanguageModel.generate(chatUserMessage);
@@ -26,11 +22,7 @@ export class GenerateChatResponse {
 
     // instala Drizzle y conecta la BD
     console.log(
-      ChatMessage.create(
-        chatUserMessage.chatId,
-        ChatRole.ASSISTANT,
-        finalMessage
-      )
+      Message.createFromAssistant(chatUserMessage.chatId, finalMessage, 0)
     );
   }
 }

@@ -1,6 +1,6 @@
 import { Ollama } from "ollama";
 import { injectable } from "tsyringe";
-import type { ChatMessage } from "../domain/chat-message.ts";
+import type { Message } from "../../message/domain/message.ts";
 import type { ChatLanguageModel } from "../app/ports/chat-language-model.ts";
 
 @injectable()
@@ -11,7 +11,7 @@ export class OllamaChatLanguageModel implements ChatLanguageModel {
     this.ollama = new Ollama();
   }
 
-  async *generate(chatMessage: ChatMessage): AsyncIterable<string> {
+  async *generate(chatMessage: Message): AsyncIterable<string> {
     const response = await this.ollama.chat({
       stream: true,
       messages: [

@@ -1,13 +1,13 @@
-import { ChatRole } from "../domain/chat-role.ts";
-import { ChatMessage } from "../domain/chat-message.ts";
-import type { ChatRepository } from "./ports/chat-repository.ts";
+import { MessageRole } from "../../message/domain/message-role.ts";
+import { Message } from "../../message/domain/message.ts";
+import type { MessageRepository } from "../../message/app/ports/message-repository.ts";
 
 export class AddChatMessage {
-  constructor(private readonly chatRepository: ChatRepository) {}
+  constructor(private readonly messageRepository: MessageRepository) {}
 
   public async execute() {
-    this.chatRepository.add(
-      ChatMessage.create("", ChatRole.USER, "Hello, how are you?")
+    await this.messageRepository.add(
+      Message.create("", MessageRole.USER, "Hello, how are you?", 0)
     );
   }
 }

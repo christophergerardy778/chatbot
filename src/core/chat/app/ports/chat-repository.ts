@@ -1,5 +1,5 @@
-import type { ChatMessage } from "../../domain/chat-message.ts";
+import type { Chat } from "../../domain/chat.ts";
 
 export interface ChatRepository {
-  add(chatMessage: ChatMessage): Promise<void>;
+  add(chat: Chat): Promise<void>;
 }

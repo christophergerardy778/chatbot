@@ -4,7 +4,7 @@ import type { GenerateChatResponse } from "../../core/chat/app/generate-chat-res
 
 import { streamSSE } from "hono/streaming";
 import { inject, injectable } from "tsyringe";
-import { ChatUserMessage } from "../../core/chat/domain/chat-user-message.ts";
+import { Message } from "../../core/message/domain/message.ts";
 import { GenerateChatResponseToken } from "../../core/chat/infrastructure/di/tokens.ts";
 
 @injectable()
@@ -16,7 +16,7 @@ export class GenerateChatResponseController {
 
   async send(context: Context) {
     const body = await context.req.json<GenerateChatResponseInput>();
-    const chatMessage = ChatUserMessage.create(body.chatId, body.content);
+    const chatMessage = Message.createFromUser(body.chatId, body.content, 0);
 
     return streamSSE(context, async (stream) => {
       const chunks = this.generateChatResponse.execute(chatMessage);
